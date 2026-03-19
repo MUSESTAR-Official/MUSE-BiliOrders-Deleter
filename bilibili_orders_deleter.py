@@ -302,7 +302,6 @@ class BiliBiliOrdersDeleter:
                 print(f"✗ 删除商品订单 {order_id} 时网络错误: {e}")
                 return False
             except json.JSONDecodeError as e:
-                # 检查响应状态码，如果是200且内容为空，可能删除成功但响应格式异常
                 if response.status_code == 200 and not response.text.strip():
                     print(f"✓ 商品订单 {order_id} 删除成功 (响应为空但状态码正常)")
                     return True
@@ -328,7 +327,6 @@ class BiliBiliOrdersDeleter:
                 
                 result = response.json()
                 
-                # B站API可能返回code或errno字段表示状态，都为0表示成功
                 if result.get('code') == 0 or result.get('errno') == 0:
                     print(f"✓ 活动订单 {order_id} 删除成功")
                     return True
@@ -344,7 +342,6 @@ class BiliBiliOrdersDeleter:
                 print(f"✗ 删除活动订单 {order_id} 时网络错误: {e}")
                 return False
             except json.JSONDecodeError as e:
-                # 检查响应状态码，如果是200且内容为空，可能删除成功但响应格式异常
                 if response.status_code == 200 and not response.text.strip():
                     print(f"✓ 活动订单 {order_id} 删除成功 (响应为空但状态码正常)")
                     return True
@@ -433,7 +430,6 @@ class BiliBiliOrdersDeleter:
             status = order.get('status_name', '') or order.get('status_subname', '') or '未知状态'
             print(f"- {activity_name} ({order_id}) - {status}")
         
-        # 清理输入缓冲区
         if keyboard is not None:
             try:
                 while keyboard.is_pressed('enter') or keyboard.is_pressed('space') or keyboard.is_pressed('up') or keyboard.is_pressed('down'):
