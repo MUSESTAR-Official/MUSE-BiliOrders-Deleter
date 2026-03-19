@@ -315,14 +315,15 @@ class BiliBiliOrdersDeleter:
             url = "https://show.bilibili.com/api/ticket/order/del"
             
             data = {
-                'order_id': order_id
+                'order_id': order_id,
+                'csrf': self.session.cookies.get('bili_jct', '')
             }
             
             headers = self.get_headers()
-            headers['Content-Type'] = 'application/x-www-form-urlencoded'
+            headers['Content-Type'] = 'application/json'
             
             try:
-                response = self.session.post(url, data=data, headers=headers)
+                response = self.session.post(url, json=data, headers=headers)
                 response.raise_for_status()
                 
                 result = response.json()
